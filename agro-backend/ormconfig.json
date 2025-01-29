@@ -1,0 +1,17 @@
+{
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "usuario",
+    "password": "senha",
+    "database": "nome_do_banco",
+    "entities": ["src/entities/*.ts"],
+    "migrations": ["src/migrations/*.ts"],
+    "subscribers": ["src/subscribers/*.ts"],
+    "cli": {
+      "migrationsDir": "src/migrations",
+      "entitiesDir": "src/entities",
+      "subscribersDir": "src/subscribers"
+    }
+  }
+  
