@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Logger } from '@nestjs
 import { Propriedade } from '../entities/Propriedade';
 import { PropriedadeService } from '../services/PropriedadeService';
 import { ProdutorService } from '../services/ProdutorService';
-import { CulturaService } from 'src/services/CulturaService';
+import { CulturaService } from '../services/CulturaService';
 
 @Controller('propriedades')
 export class PropriedadeController {

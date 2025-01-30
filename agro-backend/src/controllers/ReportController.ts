@@ -1,4 +1,4 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { ReportService } from '../services/ReportService';
 
 @Controller('reports')
@@ -16,7 +16,7 @@ export class ReportController {
             return { total };
         } catch (error) {
             this.logger.error(`Erro ao obter total de fazendas ${JSON.stringify(error)}`);
-            throw error;
+            throw new HttpException('Erro ao obter total de fazendas', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
