@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProdutoresModule } from './modules/produtores/produtores.module';
-import { PropriedadesModule } from './modules/propriedades/propriedades.module';
-import { CulturasModule } from './modules/culturas/culturas.module';
-import { ReportModule } from './modules/report/report.module';
+import { ProdutoresModule } from './modules/produtores/produtores.module.js';
+import { PropriedadesModule } from './modules/propriedades/propriedades.module.js';
+import { CulturasModule } from './modules/culturas/culturas.module.js';
+import { ReportModule } from './modules/report/report.module.js';
 
 @Module({
   imports: [

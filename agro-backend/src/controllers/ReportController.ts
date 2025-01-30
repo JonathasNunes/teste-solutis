@@ -1,6 +1,8 @@
 import { Controller, Get, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { ReportService } from '../services/ReportService';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ReportService } from '../services/ReportService.js';
 
+@ApiTags('Relatórios')
 @Controller('reports')
 export class ReportController {
     private readonly logger = new Logger(ReportController.name);
@@ -8,6 +10,9 @@ export class ReportController {
     constructor(private readonly reportService: ReportService) {}
 
     @Get('total-fazendas')
+    @ApiOperation({ summary: 'Obter total de fazendas' })
+    @ApiResponse({ status: 200, description: 'Total de fazendas calculado', type: Object })
+    @ApiResponse({ status: 500, description: 'Erro ao obter total de fazendas' })
     async getTotalFazendas(): Promise<{ total: number }> {
         this.logger.log('Requisição recebida: GET /reports/total-fazendas');
         try {
@@ -21,6 +26,9 @@ export class ReportController {
     }
 
     @Get('total-hectares')
+    @ApiOperation({ summary: 'Obter total de hectares' })
+    @ApiResponse({ status: 200, description: 'Total de hectares calculado', type: Object })
+    @ApiResponse({ status: 500, description: 'Erro ao obter total de hectares' })
     async getTotalHectares(): Promise<{ total: number }> {
         this.logger.log('Requisição recebida: GET /reports/total-hectares');
         try {

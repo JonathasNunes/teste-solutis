@@ -1,6 +1,7 @@
 {
   "name": "agro-backend",
   "version": "0.0.1",
+  "type": "module",
   "description": "",
   "author": "",
   "private": true,
@@ -21,10 +22,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^8.4.7",
-    "@nestjs/core": "^8.4.7",
-    "@nestjs/platform-express": "^8.0.0",
-    "@nestjs/typeorm": "^8.1.4",
+    "@nestjs/common": "^11.0.6",
+    "@nestjs/core": "^11.0.6",
+    "@nestjs/platform-express": "^11.0.6",
+    "@nestjs/swagger": "^11.0.3",
+    "@nestjs/typeorm": "^11.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cpf-cnpj-validator": "^1.0.3",
@@ -32,12 +34,13 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
+    "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
-    "@nestjs/cli": "^8.0.0",
+    "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^8.0.0",
-    "@nestjs/testing": "^8.4.7",
+    "@nestjs/testing": "^11.0.6",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.18.125",

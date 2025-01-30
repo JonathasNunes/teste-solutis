@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Produtor } from '../entities/Produtor';
-import { ProdutorRepository } from '../repositories/ProdutorRepository';
-import { ProdutorValidator } from '../validators/ProdutorValidator';
+import { Produtor } from '../entities/Produtor.js';
+import { ProdutorRepository } from '../repositories/ProdutorRepository.js';
+import { ProdutorValidator } from '../validators/ProdutorValidator.js';
 import { validateOrReject } from 'class-validator';
 
 export class ProdutorService {

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm'; 
-import { PropriedadeController } from 'src/controllers/PropriedadeController';
-import { Propriedade } from 'src/entities/Propriedade';
-import { PropriedadeService } from 'src/services/PropriedadeService';
-import { PropriedadeValidator } from 'src/validators/PropriedadeValidator';
+import { PropriedadeController } from '../../controllers/PropriedadeController.js';
+import { Propriedade } from '../../entities/Propriedade.js';
+import { PropriedadeService } from '../../services/PropriedadeService.js';
+import { PropriedadeValidator } from '../../validators/PropriedadeValidator.js';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Propriedade])],

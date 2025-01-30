@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { Propriedade } from '../entities/Propriedade';
-import { IPropriedadeRepository } from 'src/interfaces/IPropriedadeRepository';
+import { Propriedade } from '../entities/Propriedade.js';
+import { IPropriedadeRepository } from 'src/interfaces/IPropriedadeRepository.js';
 import { Logger } from '@nestjs/common';
 
 @EntityRepository(Propriedade)

@@ -1,4 +1,4 @@
-import { Produtor } from "src/entities/Produtor";
+import { Produtor } from "src/entities/Produtor.js";
 
 export interface IProdutorRepository {
     findByCpfCnpj(cpfCnpj: string): Promise<Produtor | undefined>;

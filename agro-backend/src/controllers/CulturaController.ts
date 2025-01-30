@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, Logger } from '@nestjs/common';
-import { CulturaService } from '../services/CulturaService';
-import { Cultura } from '../entities/Cultura';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import { CulturaService } from '../services/CulturaService.js';
+import { Cultura } from '../entities/Cultura.js';
 
+@ApiTags('Culturas')
 @Controller('culturas')
 export class CulturaController {
     private readonly logger = new Logger(CulturaController.name);
@@ -9,6 +11,8 @@ export class CulturaController {
     constructor(private readonly culturaService: CulturaService) {}
 
     @Get()
+    @ApiOperation({ summary: 'Listar todas as culturas' })
+    @ApiResponse({ status: 200, description: 'Culturas listadas com sucesso', type: [Cultura] })
     async listarTodas(): Promise<Cultura[]> {
         this.logger.log('Requisição recebida para listar todas as culturas');
         try {
@@ -22,6 +26,10 @@ export class CulturaController {
     }
 
     @Get(':id')
+    @ApiOperation({ summary: 'Buscar cultura por ID' })
+    @ApiParam({ name: 'id', type: 'number', description: 'ID da cultura' })
+    @ApiResponse({ status: 200, description: 'Cultura encontrada', type: Cultura })
+    @ApiResponse({ status: 404, description: 'Cultura não encontrada' })
     async buscarPorId(@Param('id') id: number): Promise<Cultura> {
         this.logger.log(`Requisição recebida para buscar cultura com ID: ${id}`);
         try {
@@ -37,6 +45,9 @@ export class CulturaController {
     }
 
     @Post()
+    @ApiOperation({ summary: 'Criar uma nova cultura' })
+    @ApiBody({ type: Cultura, description: 'Dados da cultura a ser criada' })
+    @ApiResponse({ status: 201, description: 'Cultura criada com sucesso', type: Cultura })
     async criar(@Body() culturaData: Partial<Cultura>): Promise<Cultura> {
         this.logger.log(`Requisição recebida para criar cultura: ${JSON.stringify(culturaData)}`);
         try {
@@ -50,6 +61,11 @@ export class CulturaController {
     }
 
     @Put(':id')
+    @ApiOperation({ summary: 'Alterar cultura existente' })
+    @ApiParam({ name: 'id', type: 'number', description: 'ID da cultura' })
+    @ApiBody({ type: Cultura, description: 'Dados atualizados da cultura' })
+    @ApiResponse({ status: 200, description: 'Cultura atualizada com sucesso', type: Cultura })
+    @ApiResponse({ status: 404, description: 'Cultura não encontrada' })
     async alterar(@Param('id') id: number, @Body() culturaData: Partial<Cultura>): Promise<Cultura> {
         this.logger.log(`Requisição recebida para alterar cultura com ID: ${id}, dados: ${JSON.stringify(culturaData)}`);
         try {
@@ -63,6 +79,10 @@ export class CulturaController {
     }
 
     @Delete(':id')
+    @ApiOperation({ summary: 'Deletar cultura por ID' })
+    @ApiParam({ name: 'id', type: 'number', description: 'ID da cultura' })
+    @ApiResponse({ status: 204, description: 'Cultura deletada com sucesso' })
+    @ApiResponse({ status: 404, description: 'Cultura não encontrada' })
     async deletar(@Param('id') id: number): Promise<void> {
         this.logger.log(`Requisição recebida para deletar cultura com ID: ${id}`);
         try {

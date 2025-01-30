@@ -1,5 +1,5 @@
 import { Cultura } from "src/entities/Cultura";
-import { Propriedade } from "src/entities/Propriedade";
+import { Propriedade } from "src/entities/Propriedade.js";
 
 export interface ICulturaRepository {
     findByPropriedade(propriedadeId: number): Promise<Cultura[]> ;

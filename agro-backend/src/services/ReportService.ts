@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ReportRepository } from '../repositories/ReportRepository';
+import { ReportRepository } from '../repositories/ReportRepository.js';
 
 @Injectable()
 export class ReportService {

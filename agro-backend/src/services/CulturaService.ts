@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Cultura } from '../entities/Cultura';
-import { CulturaRepository } from '../repositories/CulturaRepository';
+import { Cultura } from '../entities/Cultura.js';
+import { CulturaRepository } from '../repositories/CulturaRepository.js';
 import { validateOrReject } from 'class-validator';
-import { CulturaValidator } from '../validators/CulturaValidator';
+import { CulturaValidator } from '../validators/CulturaValidator.js';
 
 @Injectable()
 export class CulturaService {

@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { Produtor } from '../entities/Produtor';
-import { IProdutorRepository } from '../interfaces/IProdutorRepository';
+import { Produtor } from '../entities/Produtor.js';
+import { IProdutorRepository } from '../interfaces/IProdutorRepository.js';
 import { Logger } from '@nestjs/common';
 
 @EntityRepository(Produtor)

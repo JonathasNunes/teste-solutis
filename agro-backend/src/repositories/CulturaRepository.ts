@@ -1,8 +1,8 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Logger } from '@nestjs/common';
-import { Cultura } from '../entities/Cultura';
-import { Propriedade } from '../entities/Propriedade';
-import { ICulturaRepository } from '../interfaces/ICulturaRepository';
+import { Cultura } from '../entities/Cultura.js';
+import { Propriedade } from '../entities/Propriedade.js';
+import { ICulturaRepository } from '../interfaces/ICulturaRepository.js';
 
 @EntityRepository(Cultura)
 export class CulturaRepository

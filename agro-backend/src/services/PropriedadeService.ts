@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Propriedade } from '../entities/Propriedade';
-import { PropriedadeRepository } from '../repositories/PropriedadeRepository';
-import { PropriedadeValidator } from '../validators/PropriedadeValidator';
+import { Propriedade } from '../entities/Propriedade.js';
+import { PropriedadeRepository } from '../repositories/PropriedadeRepository.js';
+import { PropriedadeValidator } from '../validators/PropriedadeValidator.js';
 import { validateOrReject } from 'class-validator';
 
 export class PropriedadeService {

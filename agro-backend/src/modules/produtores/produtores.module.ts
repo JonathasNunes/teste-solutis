@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm'; 
-import { ProdutorController } from 'src/controllers/ProdutorController';
-import { Produtor } from 'src/entities/Produtor';
-import { ProdutorService } from 'src/services/ProdutorService';
-import { ProdutorValidator } from 'src/validators/ProdutorValidator';
+import { ProdutorController } from '../../controllers/ProdutorController.js';
+import { Produtor } from '../../entities/Produtor.js';
+import { ProdutorService } from '../../services/ProdutorService.js';
+import { ProdutorValidator } from '../../validators/ProdutorValidator.js';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Produtor])],
