@@ -52,7 +52,7 @@ Certifique-se de ter instalado em sua máquina:
 
 1. Clone o repositório:
    ```sh
-   git clone https://github.com/seu-usuario/agro-backend.git
+   git clone https://github.com/JonathasNunes/teste-solutis.git
    cd agro-backend
    ```
 
