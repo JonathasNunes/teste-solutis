@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProdutoresModule } from './modules/produtores/produtores.module.js';
-import { PropriedadesModule } from './modules/propriedades/propriedades.module.js';
-import { CulturasModule } from './modules/culturas/culturas.module.js';
-import { ReportModule } from './modules/report/report.module.js';
+import { ProdutoresModule } from './modules/produtores/produtores.module';
+import { PropriedadesModule } from './modules/propriedades/propriedades.module';
+import { CulturasModule } from './modules/culturas/culturas.module';
 
 @Module({
   imports: [
@@ -20,7 +19,6 @@ import { ReportModule } from './modules/report/report.module.js';
     ProdutoresModule,
     PropriedadesModule,
     CulturasModule,
-    ReportModule,
   ],
 })
 export class AppModule {}

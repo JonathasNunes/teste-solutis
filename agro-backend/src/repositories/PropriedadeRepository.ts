@@ -1,14 +1,18 @@
-import { EntityRepository, Repository } from 'typeorm';
-import { Propriedade } from '../entities/Propriedade.js';
-import { IPropriedadeRepository } from 'src/interfaces/IPropriedadeRepository.js';
-import { Logger } from '@nestjs/common';
+import { DataSource, EntityRepository, Repository } from 'typeorm';
+import { Propriedade } from '../entities/Propriedade';
+import { IPropriedadeRepository } from 'src/interfaces/IPropriedadeRepository';
+import { Injectable, Logger } from '@nestjs/common';
 
-@EntityRepository(Propriedade)
+@Injectable()
 export class PropriedadeRepository 
   extends Repository<Propriedade> 
   implements IPropriedadeRepository 
 {
   private readonly logger = new Logger(PropriedadeRepository.name);
+
+  constructor(private dataSource: DataSource) {
+    super(Propriedade, dataSource.createEntityManager());
+  }
 
   async findByProdutor(produtorId: number): Promise<Propriedade[]> {
     this.logger.log(`Buscando propriedades do produtor com ID: ${produtorId}`);
@@ -68,5 +72,25 @@ export class PropriedadeRepository
 
     await this.remove(propriedade);
     this.logger.log(`Propriedade com ID ${id} removida com sucesso`);
+  }
+
+  // Recuperar total de fazendas
+  async countTotalFazendas(): Promise<number> {
+    this.logger.log('Iniciando contagem do total de fazendas');
+    const total = await this.count();
+    this.logger.log(`Total de fazendas encontrado: ${total}`);
+    return total;
+  }
+
+  // Recuperar o total de hectares
+  async getTotalHectares(): Promise<number> {
+    this.logger.log('Calculando o total de hectares');
+    const result = await this.createQueryBuilder('propriedade')
+      .select('SUM(propriedade.area_total)', 'totalHectares')
+      .getRawOne();
+
+    const totalHectares = result?.totalHectares ? Number(result.totalHectares) : 0;
+    this.logger.log(`Total de hectares encontrado: ${totalHectares}`);
+    return totalHectares;
   }
 }

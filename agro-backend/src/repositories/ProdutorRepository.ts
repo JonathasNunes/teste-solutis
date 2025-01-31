@@ -1,15 +1,19 @@
-import { EntityRepository, Repository } from 'typeorm';
-import { Produtor } from '../entities/Produtor.js';
-import { IProdutorRepository } from '../interfaces/IProdutorRepository.js';
-import { Logger } from '@nestjs/common';
+import { DataSource, EntityRepository, Repository } from 'typeorm';
+import { Produtor } from '../entities/Produtor';
+import { IProdutorRepository } from '../interfaces/IProdutorRepository';
+import { Injectable, Logger } from '@nestjs/common';
 
-@EntityRepository(Produtor)
+@Injectable()
 export class ProdutorRepository
   extends Repository<Produtor>
   implements IProdutorRepository
 {
   private readonly logger = new Logger(ProdutorRepository.name);
 
+  constructor(private dataSource: DataSource) {
+    super(Produtor, dataSource.createEntityManager());
+  }
+  
   async findByCpfCnpj(cpfCnpj: string): Promise<Produtor | undefined> {
     this.logger.log(`Buscando produtor pelo CPF/CNPJ: ${cpfCnpj}`);
     const produtor = await this.findOne({ where: { cpf_cnpj: cpfCnpj } });

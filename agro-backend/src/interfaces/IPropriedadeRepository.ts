@@ -1,4 +1,4 @@
-import { Propriedade } from "src/entities/Propriedade.js";
+import { Propriedade } from "src/entities/Propriedade";
 
 export interface IPropriedadeRepository {
     findByProdutor(produtorId: number): Promise<Propriedade[]>;

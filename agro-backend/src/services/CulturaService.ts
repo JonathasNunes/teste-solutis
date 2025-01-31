@@ -1,17 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Cultura } from '../entities/Cultura.js';
-import { CulturaRepository } from '../repositories/CulturaRepository.js';
+import { Cultura } from '../entities/Cultura';
+import { CulturaRepository } from '../repositories/CulturaRepository';
 import { validateOrReject } from 'class-validator';
-import { CulturaValidator } from '../validators/CulturaValidator.js';
+import { CulturaValidator } from '../validators/CulturaValidator';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CulturaService {
     private readonly logger = new Logger(CulturaService.name);
 
     constructor(
-        @InjectRepository(CulturaRepository)
-        private readonly culturaRepository: CulturaRepository
+        @InjectRepository(Cultura)
+        private readonly culturaRepository: Repository<Cultura>
     ) {}
 
     async listarTodas(): Promise<Cultura[]> {

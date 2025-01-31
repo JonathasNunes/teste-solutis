@@ -1,17 +1,14 @@
-import { Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Produtor } from '../entities/Produtor.js';
-import { ProdutorRepository } from '../repositories/ProdutorRepository.js';
-import { ProdutorValidator } from '../validators/ProdutorValidator.js';
+import { Injectable, Logger } from '@nestjs/common';
+import { Produtor } from '../entities/Produtor';
+import { ProdutorRepository } from '../repositories/ProdutorRepository';
+import { ProdutorValidator } from '../validators/ProdutorValidator';
 import { validateOrReject } from 'class-validator';
 
+@Injectable()
 export class ProdutorService {
   private readonly logger = new Logger(ProdutorService.name);
 
-  constructor(
-    @InjectRepository(ProdutorRepository)
-    private readonly produtorRepository: ProdutorRepository
-  ) {}
+  constructor(private readonly produtorRepository: ProdutorRepository) {}
 
   async cadastrarProdutor(cpfCnpj: string, nome: string): Promise<Produtor> {
     this.logger.log(`Iniciando cadastro de produtor: ${nome} - CPF/CNPJ: ${cpfCnpj}`);

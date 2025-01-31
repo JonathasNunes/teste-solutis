@@ -1,15 +1,19 @@
-import { EntityRepository, Repository } from 'typeorm';
-import { Logger } from '@nestjs/common';
-import { Cultura } from '../entities/Cultura.js';
-import { Propriedade } from '../entities/Propriedade.js';
-import { ICulturaRepository } from '../interfaces/ICulturaRepository.js';
+import { DataSource, EntityRepository, Repository } from 'typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { Cultura } from '../entities/Cultura';
+import { Propriedade } from '../entities/Propriedade';
+import { ICulturaRepository } from '../interfaces/ICulturaRepository';
 
-@EntityRepository(Cultura)
+@Injectable()
 export class CulturaRepository
   extends Repository<Cultura>
   implements ICulturaRepository
 {
   private readonly logger = new Logger(CulturaRepository.name);
+
+  constructor(private dataSource: DataSource) {
+    super(Cultura, dataSource.createEntityManager());
+  }
 
   // Encontrar todas as culturas de uma propriedade
   async findByPropriedade(propriedadeId: number): Promise<Cultura[]> {

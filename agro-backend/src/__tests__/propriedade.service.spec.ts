@@ -128,4 +128,38 @@ describe('PropriedadeService', () => {
         
         await expect(propriedadeService.excluirPropriedade(99)).rejects.toThrow('Propriedade não encontrada.');
     });
+
+    it('deve retornar o total de fazendas corretamente', async () => {
+        jest.spyOn(propriedadeRepository, 'countTotalFazendas').mockResolvedValue(10);
+        const total = await propriedadeService.totalFazendas();
+        expect(total).toBe(10);
+      });
+    
+      it('deve retornar o total de hectares corretamente', async () => {
+        jest.spyOn(propriedadeRepository, 'getTotalHectares').mockResolvedValue(500);
+        const total = await propriedadeService.totalHectares();
+        expect(total).toBe(500);
+      });
+    
+      it('deve retornar 0 quando não houver fazendas cadastradas', async () => {
+        jest.spyOn(propriedadeRepository, 'countTotalFazendas').mockResolvedValue(0);
+        const total = await propriedadeService.totalFazendas();
+        expect(total).toBe(0);
+      });
+    
+      it('deve retornar 0 quando não houver hectares cadastrados', async () => {
+        jest.spyOn(propriedadeRepository, 'getTotalHectares').mockResolvedValue(0);
+        const total = await propriedadeService.totalHectares();
+        expect(total).toBe(0);
+      });
+    
+      it('deve lançar um erro se houver falha ao contar total de fazendas', async () => {
+        jest.spyOn(propriedadeRepository, 'countTotalFazendas').mockRejectedValue(new Error('Erro ao contar fazendas'));
+        await expect(propriedadeService.totalFazendas()).rejects.toThrow('Erro ao contar fazendas');
+      });
+    
+      it('deve lançar um erro se houver falha ao obter total de hectares', async () => {
+        jest.spyOn(propriedadeRepository, 'getTotalHectares').mockRejectedValue(new Error('Erro ao obter hectares'));
+        await expect(propriedadeService.totalHectares()).rejects.toThrow('Erro ao obter hectares');
+      });
 });

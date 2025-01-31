@@ -1,17 +1,14 @@
-import { Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Propriedade } from '../entities/Propriedade.js';
-import { PropriedadeRepository } from '../repositories/PropriedadeRepository.js';
-import { PropriedadeValidator } from '../validators/PropriedadeValidator.js';
+import { Injectable, Logger } from '@nestjs/common';
+import { Propriedade } from '../entities/Propriedade';
+import { PropriedadeRepository } from '../repositories/PropriedadeRepository';
+import { PropriedadeValidator } from '../validators/PropriedadeValidator';
 import { validateOrReject } from 'class-validator';
 
+@Injectable()
 export class PropriedadeService {
   private readonly logger = new Logger(PropriedadeService.name);
 
-  constructor(
-    @InjectRepository(PropriedadeRepository)
-    private readonly propriedadeRepository: PropriedadeRepository
-  ) {}
+  constructor(private readonly propriedadeRepository: PropriedadeRepository) {}
 
   async cadastrarPropriedade(data: Propriedade): Promise<Propriedade> {
     this.logger.log(`Iniciando cadastro de propriedade: ${data.nome}`);
@@ -84,5 +81,15 @@ export class PropriedadeService {
     this.logger.log(`Excluindo propriedade ID: ${id}`);
     await this.propriedadeRepository.deletePropriedade(id);
     this.logger.log(`Propriedade excluída com sucesso: ID ${id}`);
+  }
+
+  async totalFazendas(): Promise<number> {
+    this.logger.log('Iniciando consulta para total de fazendas');
+    return this.propriedadeRepository.countTotalFazendas();
+  }
+
+  async totalHectares(): Promise<number> {
+    this.logger.log('Iniciando consulta para total de hectares');
+    return this.propriedadeRepository.getTotalHectares();
   }
 }
