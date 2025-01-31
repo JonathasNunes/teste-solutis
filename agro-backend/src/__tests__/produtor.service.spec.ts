@@ -4,9 +4,6 @@ import { ProdutorValidator } from '../validators/ProdutorValidator';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
-jest.mock('../repositories/ProdutorRepository');
-jest.mock('../validators/ProdutorValidator');
-
 describe('ProdutorService', () => {
 
     let produtorService: ProdutorService;
@@ -18,7 +15,14 @@ describe('ProdutorService', () => {
             ProdutorService,
             {
                 provide: getRepositoryToken(ProdutorRepository),
-                useClass: ProdutorRepository, // Usando o mock da classe
+                useValue: {
+                    findByCpfCnpj: jest.fn(),
+                    createProdutor: jest.fn(),
+                    updateProdutor: jest.fn(),
+                    findAll: jest.fn(),
+                    findById: jest.fn(),
+                    deleteProdutor: jest.fn(),
+                },
             },
         ],
         }).compile();

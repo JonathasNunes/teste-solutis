@@ -1,19 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PropriedadeRepository } from '../repositories/PropriedadeRepository';
 import { Propriedade } from '../entities/Propriedade';
+import { DataSource } from 'typeorm';
 
 describe('PropriedadeRepository', () => {
   let repository: PropriedadeRepository;
+  let mockDataSource: Partial<DataSource>;
 
   beforeEach(async () => {
+    mockDataSource = {
+        createEntityManager: jest.fn().mockReturnValue({
+          find: jest.fn(),
+          save: jest.fn(),
+          delete: jest.fn(),
+          findOneOrFail: jest.fn(),
+          getRawOne: jest.fn(),
+        }),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PropriedadeRepository,
         {
-          provide: 'ProdutorService', // Adicione o mock do serviço que você usa
-          useValue: {
-            buscarPorId: jest.fn(),
-          },
+          provide: DataSource,
+          useValue: mockDataSource
         },
       ],
     }).compile();

@@ -4,20 +4,21 @@ import { CulturaRepository } from '../repositories/CulturaRepository';
 import { Cultura } from '../entities/Cultura';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Propriedade } from '../entities/Propriedade';
+import { Repository } from 'typeorm';
 
 jest.mock('../repositories/CulturaRepository');
 jest.mock('../validators/CulturaValidator');
 
 describe('CulturaService', () => {
   let service: CulturaService;
-  let repository: CulturaRepository;
+  let culturaRepository: Repository<Cultura>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CulturaService,
         {
-          provide: getRepositoryToken(CulturaRepository),
+          provide: getRepositoryToken(Cultura),
           useValue: {
             find: jest.fn(),
             findOne: jest.fn(),
@@ -30,25 +31,25 @@ describe('CulturaService', () => {
     }).compile();
 
     service = module.get<CulturaService>(CulturaService);
-    repository = module.get<CulturaRepository>(getRepositoryToken(CulturaRepository));
+    culturaRepository = module.get<Repository<Cultura>>(getRepositoryToken(Cultura));
   });
 
   it('deve listar todas as culturas', async () => {
     const culturas = [{ id: 1, nome: 'Milho', safra: '2023' } as Cultura];
-    jest.spyOn(repository, 'find').mockResolvedValue(culturas);
+    jest.spyOn(culturaRepository, 'find').mockResolvedValue(culturas);
 
     const result = await service.listarTodas();
     expect(result).toEqual(culturas);
-    expect(repository.find).toHaveBeenCalledWith({ relations: ['propriedade'] });
+    expect(culturaRepository.find).toHaveBeenCalledWith({ relations: ['propriedade'] });
   });
 
   it('deve buscar cultura por ID', async () => {
     const cultura = { id: 1, nome: 'Milho', safra: '2023' } as Cultura;
-    jest.spyOn(repository, 'findOne').mockResolvedValue(cultura);
+    jest.spyOn(culturaRepository, 'findOne').mockResolvedValue(cultura);
 
     const result = await service.buscarPorId(1);
     expect(result).toEqual(cultura);
-    expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 }, relations: ['propriedade'] });
+    expect(culturaRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 }, relations: ['propriedade'] });
   });
 
   it('deve criar uma nova cultura', async () => {
@@ -60,14 +61,14 @@ describe('CulturaService', () => {
 
     const novaCultura = { id: 1, ...culturaData } as Cultura;
 
-    jest.spyOn(repository, 'create').mockReturnValue(novaCultura);
-    jest.spyOn(repository, 'save').mockResolvedValue(novaCultura);
+    jest.spyOn(culturaRepository, 'create').mockReturnValue(novaCultura);
+    jest.spyOn(culturaRepository, 'save').mockResolvedValue(novaCultura);
 
     const result = await service.criar(culturaData);
 
     expect(result).toEqual(novaCultura);
-    expect(repository.create).toHaveBeenCalledWith(culturaData);
-    expect(repository.save).toHaveBeenCalledWith(novaCultura);
+    expect(culturaRepository.create).toHaveBeenCalledWith(culturaData);
+    expect(culturaRepository.save).toHaveBeenCalledWith(novaCultura);
   });
 
   it('deve lançar erro ao tentar criar cultura sem propriedade', async () => {
@@ -78,11 +79,11 @@ describe('CulturaService', () => {
   it('deve alterar uma cultura existente', async () => {
     const culturaExistente = { id: 1, nome: 'Milho', safra: '2023' } as Cultura;
     jest.spyOn(service, 'buscarPorId').mockResolvedValue(culturaExistente);
-    jest.spyOn(repository, 'save').mockResolvedValue({ ...culturaExistente, nome: 'Trigo' });
+    jest.spyOn(culturaRepository, 'save').mockResolvedValue({ ...culturaExistente, nome: 'Trigo' });
 
     const result = await service.alterar(1, { nome: 'Trigo' });
     expect(result.nome).toBe('Trigo');
-    expect(repository.save).toHaveBeenCalledWith({ ...culturaExistente, nome: 'Trigo' });
+    expect(culturaRepository.save).toHaveBeenCalledWith({ ...culturaExistente, nome: 'Trigo' });
   });
 
   it('deve lançar erro ao tentar alterar cultura inexistente', async () => {
@@ -93,9 +94,9 @@ describe('CulturaService', () => {
   });
 
   it('deve deletar uma cultura por ID', async () => {
-    jest.spyOn(repository, 'delete').mockResolvedValue({ affected: 1 } as any);
+    jest.spyOn(culturaRepository, 'delete').mockResolvedValue({ affected: 1 } as any);
 
     await expect(service.deletar(1)).resolves.toBeUndefined();
-    expect(repository.delete).toHaveBeenCalledWith(1);
+    expect(culturaRepository.delete).toHaveBeenCalledWith(1);
   });
 });

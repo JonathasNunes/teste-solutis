@@ -5,27 +5,39 @@ import { PropriedadeRepository } from '../repositories/PropriedadeRepository';
 import { PropriedadeValidator } from '../validators/PropriedadeValidator';
 import { Propriedade } from '../entities/Propriedade';
 
-jest.mock('../repositories/PropriedadeRepository');
-jest.mock('../validators/PropriedadeValidator');
-
 describe('PropriedadeService', () => {
     let propriedadeService: PropriedadeService;
     let propriedadeRepository: PropriedadeRepository;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [
-                PropriedadeService,
-                {
-                    provide: getRepositoryToken(PropriedadeRepository),
-                    useClass: PropriedadeRepository,
-                },
-            ],
+          providers: [
+            PropriedadeService,
+            {
+              provide: PropriedadeRepository,
+              useValue: {
+                createPropriedade: jest.fn(),
+                updatePropriedade: jest.fn(),
+                findAll: jest.fn(),
+                findById: jest.fn(),
+                findByProdutor: jest.fn(),
+                deletePropriedade: jest.fn(),
+                countTotalFazendas: jest.fn(),
+                getTotalHectares: jest.fn(),
+              },
+            },
+            {
+              provide: PropriedadeValidator,
+              useValue: {
+                validarAreas: jest.fn(),
+              },
+            },
+          ],
         }).compile();
-
+    
         propriedadeService = module.get<PropriedadeService>(PropriedadeService);
-        propriedadeRepository = module.get<PropriedadeRepository>(getRepositoryToken(PropriedadeRepository));
-    });
+        propriedadeRepository = module.get<PropriedadeRepository>(PropriedadeRepository);
+      });
 
     it('deve cadastrar uma propriedade com sucesso', async () => {
         const propriedadeMock: Propriedade = {

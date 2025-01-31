@@ -24,6 +24,8 @@ describe('PropriedadeController', () => {
             buscaPropriedadesPorProdutor: jest.fn(),
             atualizarPropriedade: jest.fn(),
             excluirPropriedade: jest.fn(),
+            totalFazendas: jest.fn(),
+            totalHectares: jest.fn(),
           },
         },
         {

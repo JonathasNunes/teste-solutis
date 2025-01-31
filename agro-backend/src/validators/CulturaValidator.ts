@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-import { Propriedade } from 'src/entities/Propriedade';
+import { Propriedade } from '../entities/Propriedade';
 
 export class CulturaValidator {
     
