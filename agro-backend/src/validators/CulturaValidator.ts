@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty } from 'class-validator';
+import { Propriedade } from 'src/entities/Propriedade';
 
 export class CulturaValidator {
     
@@ -11,5 +12,5 @@ export class CulturaValidator {
     safra: string;
 
     @IsNotEmpty()
-    propriedade_id: number;
+    propriedade: Propriedade;
 }

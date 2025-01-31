@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Produtor } from '../entities/Produtor';
 import { ProdutorRepository } from '../repositories/ProdutorRepository';
 import { ProdutorValidator } from '../validators/ProdutorValidator';
@@ -10,25 +10,30 @@ export class ProdutorService {
 
   constructor(private readonly produtorRepository: ProdutorRepository) {}
 
-  async cadastrarProdutor(cpfCnpj: string, nome: string): Promise<Produtor> {
-    this.logger.log(`Iniciando cadastro de produtor: ${nome} - CPF/CNPJ: ${cpfCnpj}`);
+  async cadastrarProdutor(cpf_cnpj: string, nome: string): Promise<Produtor> {
+    this.logger.log(`Iniciando cadastro de produtor: ${nome} - CPF/CNPJ: ${cpf_cnpj}`);
 
     const produtor = new ProdutorValidator();
-    Object.assign(produtor, {nome, cpf_cnpj: cpfCnpj});
-    await validateOrReject(produtor);
-
-    if (!ProdutorValidator.validarCpfCnpj(cpfCnpj)) {
-      this.logger.warn(`CPF ou CNPJ inválido: ${cpfCnpj}`);
-      throw new Error('CPF ou CNPJ inválido.');
+    Object.assign(produtor, {nome, cpf_cnpj});
+    try {
+      await validateOrReject(produtor);
+    } catch (errors) {
+      this.logger.warn(`Erro de validação ao cadastrar produtor: ${JSON.stringify(errors)}`);
+      throw new BadRequestException(errors);
     }
 
-    const produtorExistente = await this.produtorRepository.findByCpfCnpj(cpfCnpj);
+    if (!ProdutorValidator.validarCpfCnpj(cpf_cnpj)) {
+      this.logger.warn(`CPF ou CNPJ inválido: ${cpf_cnpj}`);
+      throw new BadRequestException('CPF ou CNPJ inválido.');
+    }
+
+    const produtorExistente = await this.produtorRepository.findByCpfCnpj(cpf_cnpj);
     if (produtorExistente) {
-      this.logger.warn(`Tentativa de cadastro duplicado para CPF/CNPJ: ${cpfCnpj}`);
-      throw new Error('Já existe um produtor com este CPF/CNPJ.');
+      this.logger.warn(`Tentativa de cadastro duplicado para CPF/CNPJ: ${cpf_cnpj}`);
+      throw new BadRequestException('Já existe um produtor com este CPF/CNPJ.');
     }
 
-    return this.produtorRepository.createProdutor({ cpf_cnpj: cpfCnpj, nome });
+    return this.produtorRepository.createProdutor({ cpf_cnpj, nome });
   }
 
   async atualizarProdutor(
@@ -39,7 +44,7 @@ export class ProdutorService {
 
     if (!ProdutorValidator.validarCpfCnpj(updateData.cpf_cnpj)) {
       this.logger.warn(`CPF ou CNPJ inválido ao atualizar produtor ID: ${id}`);
-      throw new Error('CPF ou CNPJ inválido.');
+      throw new BadRequestException('CPF ou CNPJ inválido.');
     }
 
     return this.produtorRepository.updateProdutor(id, updateData);

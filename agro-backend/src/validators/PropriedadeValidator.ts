@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsDecimal } from 'class-validator';
+import { IsString, IsNotEmpty, IsDecimal, IsNumber } from 'class-validator';
 
 export class PropriedadeValidator {
 
@@ -15,15 +15,15 @@ export class PropriedadeValidator {
     estado: string;
 
     @IsNotEmpty()
-    @IsDecimal()
+    @IsNumber()
     area_total: number;
 
     @IsNotEmpty()
-    @IsDecimal()
+    @IsNumber()
     area_agricultavel: number;
 
     @IsNotEmpty()
-    @IsDecimal()
+    @IsNumber()
     area_vegetacao: number;
 
     static validarAreas(areaTotal: number, areaAgricultavel: number, areaVegetacao: number): boolean {

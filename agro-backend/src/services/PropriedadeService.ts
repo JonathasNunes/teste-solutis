@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Propriedade } from '../entities/Propriedade';
 import { PropriedadeRepository } from '../repositories/PropriedadeRepository';
 import { PropriedadeValidator } from '../validators/PropriedadeValidator';
@@ -20,19 +20,19 @@ export class PropriedadeService {
       await validateOrReject(propriedade);
     } catch (error) {
       this.logger.warn(`Dados inválidos ao cadastrar propriedade: ${JSON.stringify(data)}`);
-      throw error;
+      throw new BadRequestException(error);
     }
 
     if (!PropriedadeValidator.validarAreas(data.area_total, data.area_agricultavel, data.area_vegetacao)) {
       this.logger.warn(`Áreas inválidas para propriedade: ${data.nome}`);
-      throw new Error('A soma das áreas agricultável e de vegetação não pode ultrapassar a área total.');
+      throw new BadRequestException('A soma das áreas agricultável e de vegetação não pode ultrapassar a área total.');
     }
 
     const novaPropriedade = await this.propriedadeRepository.createPropriedade({
       ...data,
       produtor: data.produtor,
     });
-
+    
     this.logger.log(`Propriedade cadastrada com sucesso: ID ${novaPropriedade.id}`);
     return novaPropriedade;
   }
@@ -43,7 +43,7 @@ export class PropriedadeService {
     if (data.area_total && data.area_agricultavel && data.area_vegetacao) {
       if (!PropriedadeValidator.validarAreas(data.area_total, data.area_agricultavel, data.area_vegetacao)) {
         this.logger.warn(`Áreas inválidas ao atualizar propriedade ID: ${id}`);
-        throw new Error('A soma das áreas agricultável e de vegetação não pode ultrapassar a área total.');
+        throw new BadRequestException('A soma das áreas agricultável e de vegetação não pode ultrapassar a área total.');
       }
     }
 
@@ -67,7 +67,7 @@ export class PropriedadeService {
     const propriedade = await this.propriedadeRepository.findById(id);
     if (!propriedade) {
       this.logger.warn(`Propriedade não encontrada: ID ${id}`);
-      throw new Error('Propriedade não encontrada.');
+      throw new BadRequestException('Propriedade não encontrada.');
     }
     return propriedade;
   }

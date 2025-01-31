@@ -84,6 +84,13 @@ export class PropriedadeController {
     
     const propriedadeAtualizada = await this.propriedadeService.atualizarPropriedade(id, data);
     this.logger.log(`Propriedade ${id} atualizada com sucesso.`);
+
+    if (data.culturas && data.culturas.length > 0) {
+      this.logger.log(`Associando ${data.culturas.length} culturas à propriedade ${propriedadeAtualizada.id}`);
+      for (const cultura of data.culturas) {
+        await this.culturaService.criar({ ...cultura, propriedade: propriedadeAtualizada });
+      }
+    }
     return propriedadeAtualizada;
   }
 

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cultura } from '../entities/Cultura';
 import { CulturaRepository } from '../repositories/CulturaRepository';
@@ -44,12 +44,12 @@ export class CulturaService {
             await validateOrReject(cultura);
         } catch (error) {
             this.logger.warn(`Dados inválidos ao cadastrar cultura: ${JSON.stringify(culturaData)}`);
-            throw error;
+            throw new BadRequestException(error);
         }
 
         if (!culturaData.propriedade || !culturaData.propriedade.id) {
             this.logger.warn('Tentativa de cadastro de cultura sem propriedade vinculada');
-            throw new Error('O ID da propriedade é obrigatório para cadastrar uma cultura.');
+            throw new BadRequestException('O ID da propriedade é obrigatório para cadastrar uma cultura.');
         }
 
         const novaCultura = this.culturaRepository.create(culturaData);
@@ -65,7 +65,7 @@ export class CulturaService {
         const culturaExistente = await this.buscarPorId(id);
         if (!culturaExistente) {
             this.logger.warn(`Tentativa de atualização de cultura inexistente: ID ${id}`);
-            throw new Error('Cultura não encontrada.');
+            throw new BadRequestException('Cultura não encontrada.');
         }
 
         Object.assign(culturaExistente, culturaData);
